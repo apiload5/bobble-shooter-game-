@@ -1,23 +1,21 @@
 # File: .github/workflows/main.yml
-name: Build and Release
 
+name: Build and Release
 on:
   push:
     branches:
-      - main # Jab bhi main branch par code push ho, yeh action chalegi
-
+      - main
 jobs:
   build:
-    runs-on: ubuntu-latest # Linux-based machine par build chalayenge
-
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Setup Flutter
-        uses: subosito/flutter-action@v4
+        uses: subosito/flutter-action@v1
         with:
-          flutter-version: '3.16.0' # Flutter ka version yahan likhein (jo aap use kar rahe hain)
+          flutter-version: '3.16.0'
           channel: 'stable'
 
       - name: Get Dependencies
@@ -27,23 +25,5 @@ jobs:
         run: flutter build apk --release
 
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Yeh token GitHub khud provide karta hai
-        with:
-          tag_name: v1.0.${{ github.run_number }} # Har baar naya version number
-          release_name: Release v1.0.${{ github.run_number }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/app/outputs/flutter-apk/app-release.apk
-          asset_name: bobble-shooter-game.apk
-          asset_content_type: application/zip
+        id: create
+        
