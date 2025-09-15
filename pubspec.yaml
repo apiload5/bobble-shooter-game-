@@ -1,0 +1,4 @@
+dependencies:
+  flutter:
+    sdk: flutter
+  google_mobile_ads: ^3.0.0 # Latest version dekh lein
