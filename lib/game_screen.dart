@@ -1,13 +1,14 @@
-// File: lib/game_screen.dart
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'game_painter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'game_painter.dart'; // Ensure this file exists and contains the CustomPainter class
+
+const String gameInterstitialAdUnitId = "ca-app-pub-3940256099942544/1033173712";
 
 class GameScreen extends StatefulWidget {
-  const GameScreen({super.key});
+  const GameScreen({super.key}); // Yakeeni banayen ke constructor aesa hi hai
 
   @override
   State<GameScreen> createState() => _GameScreenState();
@@ -68,7 +69,6 @@ class _GameScreenState extends State<GameScreen> {
         },
         onAdFailedToLoad: (LoadAdError error) {
           _isAdLoaded = false;
-          // Agar ad load na ho to game seedha restart ho jaye
           if (isGameOver) {
             _restartGame();
           }
@@ -78,7 +78,6 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _showAdWithSkip() {
-    // Agar ad load ho to ad screen show karein
     if (_isAdLoaded) {
       _adTimeLeft = 5;
       showDialog(
@@ -117,9 +116,8 @@ class _GameScreenState extends State<GameScreen> {
             },
           );
         },
-      ).then((_) => _restartGame()); // Dialog band hone par game restart karein
+      ).then((_) => _restartGame());
     } else {
-      // Agar ad load na ho to seedha game restart karein
       _restartGame();
     }
   }
@@ -136,7 +134,6 @@ class _GameScreenState extends State<GameScreen> {
       _initializeGame();
       isGameOver = false;
     });
-    // Nay ad load karein agle game ke liye
     _loadInterstitialAd();
   }
 
@@ -188,6 +185,3 @@ class _GameScreenState extends State<GameScreen> {
     );
   }
 }
-
-// GamePainter class code yahan se shamil karen
-// ...
