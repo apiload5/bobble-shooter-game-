@@ -1,0 +1,8 @@
+<manifest ...>
+  <application ...>
+    <meta-data
+        android:name="com.google.android.gms.ads.APPLICATION_ID"
+        android:value="ca-app-pub-9525665139626448~1351897389"/>
+    ...
+  </application>
+</manifest>
