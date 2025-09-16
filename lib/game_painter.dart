@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class GamePainter extends CustomPainter {
   final List<List<Color>> board;
-  final List<Color> colors;
 
-  GamePainter({required this.board, required this.colors});
+  GamePainter({required this.board});
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Game board dimensions and bubble properties
+    if (board.isEmpty || board[0].isEmpty) return;
+
     final double bubbleRadius = 25.0;
     final double padding = 5.0;
     final int rows = board.length;
@@ -19,21 +19,24 @@ class GamePainter extends CustomPainter {
     final double startX = (size.width - totalWidth) / 2;
     final double startY = (size.height - totalHeight) / 2;
 
+    final Paint paint = Paint();
+
+    // Optional: background fill
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      Paint()..color = Colors.black,
+    );
+
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < cols; c++) {
+        paint.color = board[r][c];
         final double x = startX + c * (bubbleDiameter + padding) + bubbleRadius;
         final double y = startY + r * (bubbleDiameter + padding) + bubbleRadius;
-        final Color color = board[r][c];
-
-        // Draw the bubble
-        final Paint paint = Paint()..color = color;
         canvas.drawCircle(Offset(x, y), bubbleRadius, paint);
       }
     }
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
