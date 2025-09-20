@@ -3,9 +3,9 @@ description: A simple bubble shooter game in Flutter
 publish_to: "none" # is project ko pub.dev pe publish nahi karna
 
 environment:
-  sdk: ">=3.4.0 <4.0.0"
+  sdk: ">=3.2.0 <4.0.0"
   flutter: ">=3.16.0"
-
+  
 dependencies:
   flutter:
     sdk: flutter
