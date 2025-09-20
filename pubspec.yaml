@@ -1,44 +1,23 @@
-name: Build and Release
+name: bobble_shooter
+description: A simple bubble shooter game in Flutter
+publish_to: "none" # is project ko pub.dev pe publish nahi karna
 
-on:
-  push:
-    branches:
-      - main
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+  flutter: ">=3.16.0"
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+dependencies:
+  flutter:
+    sdk: flutter
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.16.0'
-          channel: 'stable'
+  cupertino_icons: ^1.0.8
+  # yahan tum apni game ke dependencies add kar sakte ho
 
-      - name: Disable Flutter Analytics
-        run: flutter --disable-analytics
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
 
-      - name: Cache Flutter dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.pub-cache
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pub-
-
-      - name: Get Dependencies
-        run: flutter pub get
-
-      - name: Build Android APK
-        run: flutter build apk --release
-
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
-          
+flutter:
+  uses-material-design: true
+  
