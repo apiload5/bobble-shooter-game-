@@ -10,42 +10,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout source code
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # Step 2: Setup Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0'
+          flutter-version: '3.16.0'
           channel: 'stable'
 
-      - name: Disable Flutter Analytics
-        run: flutter --disable-analytics
+      # Step 3: Ensure pubspec.yaml has SDK constraints (fail-safe)
+      - name: Check SDK Constraint
+        run: |
+          if ! grep -q "sdk:" pubspec.yaml; then
+            echo "Adding missing SDK constraint..."
+            echo -e "\nenvironment:\n  sdk: \">=3.4.0 <4.0.0\"\n  flutter: \">=3.16.0\"" >> pubspec.yaml
+          fi
+          cat pubspec.yaml
 
-      - name: Cache Flutter dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.pub-cache
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pub-
-
+      # Step 4: Get dependencies
       - name: Get Dependencies
         run: flutter pub get
 
+      # Step 5: Build Android APK
       - name: Build Android APK
         run: flutter build apk --release
 
-      # Rename APK to a simpler name
+      # Step 6: Rename APK for clarity
       - name: Rename APK
         run: |
           mkdir -p output
-          cp build/app/outputs/flutter-apk/app-release.apk output/MyApp.apk
+          cp build/app/outputs/flutter-apk/app-release.apk output/bobble-shooter.apk
 
+      # Step 7: Upload APK as Artifact
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MyApp-Release
-          path: output/MyApp.apk
+          name: Bobble-Shooter-Release
+          path: output/bobble-shooter.apk
           
