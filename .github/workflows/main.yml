@@ -21,6 +21,12 @@ jobs:
           flutter-version: '3.16.0'
           channel: 'stable'
 
+        - name: Create Missing Platform Folders
+        run: flutter create .
+
+      - name: Get Dependencies
+        run: flutter pub get
+
       # Step 3: Disable analytics (taake prompt na aaye)
       - name: Disable Flutter Analytics
         run: flutter config --no-analytics
