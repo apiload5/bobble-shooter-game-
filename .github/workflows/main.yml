@@ -1,4 +1,7 @@
-name: Build and Release APK
+name: bobble_shooter
+description: A simple bubble shooter game in Flutter
+publish_to: "none"
+
 
 on:
   push:
