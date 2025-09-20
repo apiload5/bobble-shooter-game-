@@ -1,7 +1,4 @@
-name: bobble_shooter
-description: A simple bubble shooter game in Flutter
-publish_to: "none"
-
+name: Build and Release APK
 
 on:
   push:
@@ -17,37 +14,32 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Step 2: Setup Flutter
+      # Step 2: Setup Flutter SDK
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.16.0'
           channel: 'stable'
 
-      # Step 3: Ensure pubspec.yaml has SDK constraints (fail-safe)
-      - name: Check SDK Constraint
-        run: |
-          if ! grep -q "sdk:" pubspec.yaml; then
-            echo "Adding missing SDK constraint..."
-            echo -e "\nenvironment:\n  sdk: \">=3.4.0 <4.0.0\"\n  flutter: \">=3.16.0\"" >> pubspec.yaml
-          fi
-          cat pubspec.yaml
+      # Step 3: Disable analytics (taake prompt na aaye)
+      - name: Disable Flutter Analytics
+        run: flutter config --no-analytics
 
-      # Step 4: Get dependencies
+      # Step 4: Get Flutter dependencies
       - name: Get Dependencies
         run: flutter pub get
 
-      # Step 5: Build Android APK
+      # Step 5: Build release APK
       - name: Build Android APK
         run: flutter build apk --release
 
-      # Step 6: Rename APK for clarity
+      # Step 6: Rename APK (easy download name)
       - name: Rename APK
         run: |
           mkdir -p output
           cp build/app/outputs/flutter-apk/app-release.apk output/bobble-shooter.apk
 
-      # Step 7: Upload APK as Artifact
+      # Step 7: Upload APK artifact
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
