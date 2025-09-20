@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build and Release APK
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -36,9 +37,15 @@ jobs:
       - name: Build Android APK
         run: flutter build apk --release
 
+      # Rename APK to a simpler name
+      - name: Rename APK
+        run: |
+          mkdir -p output
+          cp build/app/outputs/flutter-apk/app-release.apk output/MyApp.apk
+
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: MyApp-Release
+          path: output/MyApp.apk
           
